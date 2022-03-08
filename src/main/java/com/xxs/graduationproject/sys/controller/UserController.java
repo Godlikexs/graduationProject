@@ -23,9 +23,11 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-    @PostMapping(value = "/api/login")
-    @CrossOrigin       //后端跨域
-    public Result login(@RequestBody User user){
+    @CrossOrigin
+    @PostMapping(value = "/login")
+    public Result login( @RequestBody User user) {
+
+        System.out.println(user);
         return userService.login(user);
     }
 

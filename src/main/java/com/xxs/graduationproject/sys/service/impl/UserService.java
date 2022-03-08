@@ -39,7 +39,7 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
         User uer=userMapper.selectOne(wrapper);
         //比较密码
         if (uer!=null&&uer.getPassword().equals(user.getPassword())){
-            return new Result(200,"",uer);
+            return new Result(200,"登陆成功",uer);
         }
         return new Result(400,"登录失败","");
     }
