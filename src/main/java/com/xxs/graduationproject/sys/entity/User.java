@@ -41,6 +41,28 @@ public class User implements Serializable {
      */
     private String nick;
 
+    /**
+     * 盐值
+     */
+    private  String solt;
+
+    private  String phone;
+
+    public String getSolt() {
+        return solt;
+    }
+
+    public void setSolt(String solt) {
+        this.solt = solt;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public Integer getId() {
         return id;
@@ -101,13 +123,15 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-        "id=" + id +
-        ", userName=" + userName +
-        ", password=" + password +
-        ", sex=" + sex +
-        ", email=" + email +
-        ", address=" + address +
-        ", nick=" + nick +
-        "}";
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", sex=" + sex +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", nick='" + nick + '\'' +
+                ", solt='" + solt + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
     }
 }
