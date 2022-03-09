@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -47,6 +48,17 @@ public class User implements Serializable {
     private  String solt;
 
     private  String phone;
+
+    @TableField(exist = false)//不是表的字段
+    private List<Role> roles;//用于结果集封装角色信息
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 
     public String getSolt() {
         return solt;
@@ -132,6 +144,7 @@ public class User implements Serializable {
                 ", nick='" + nick + '\'' +
                 ", solt='" + solt + '\'' +
                 ", phone='" + phone + '\'' +
+                ", roles=" + roles +
                 '}';
     }
 }

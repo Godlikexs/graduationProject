@@ -37,14 +37,14 @@ public class AutoGeneratorUtil {
     private static String userName = "root";
     private static String password = "123456";
     private static String url = "jdbc:mysql://localhost:3306/graduationproject?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&";
-    private static String[] tables = {"user"};//要生成的表
+    private static String[] tables = {"role","power","user_role","role_power"};//要生成的表
     /**
      * 生成包路径
      */
     private static String packageParent = "com.xxs.graduationproject";//项目目录
     private static String entity = "sys.entity";
     private static String mapper = "sys.mapper";
-    private static String mapperXml = "sys.mapper.xml";
+    private static String mapperXml = "sys.mapper";//.xml 目录下文件映射失败，尚未解决
     private static String service = "sys.service";
     private static String serviceImpl = "sys.service.impl";
     private static String controller = "sys.controller";

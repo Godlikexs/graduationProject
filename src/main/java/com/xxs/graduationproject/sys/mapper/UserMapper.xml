@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxs.graduationproject.sys.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xxs.graduationproject.sys.entity.User">
+        <id column="id" property="id" />
+        <result column="user_name" property="userName" />
+        <result column="password" property="password" />
+        <result column="sex" property="sex" />
+        <result column="email" property="email" />
+        <result column="address" property="address" />
+        <result column="nick" property="nick" />
+        <result column="solt" property="solt"/>
+        <result column="phone" property="phone"/>
+        <collection property="roles" ofType="com.xxs.graduationproject.sys.entity.Role">
+            <result column="role_id" property="roleId"/>
+            <result column="role_name" property="roleName"/>
+            <result column="role_code" property="roleCode"/>
+        </collection>
+    </resultMap>
+    <select id="queryOneByUserName" resultMap="BaseResultMap">
+        SELECT
+            user.id ,
+            user_name ,
+            password ,
+            nick,
+            sex ,
+            phone,
+            address,
+            solt,
+            email,
+            role_id,
+            role_name,
+            role_code
+        FROM
+            user
+                LEFT JOIN user_role  ON user_role.uid=user.id
+                LEFT JOIN role  ON user_role.rid=role.role_id
+        WHERE
+            user.user_name = #{username}
+    </select>
+
+</mapper>

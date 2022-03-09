@@ -4,6 +4,8 @@ import com.xxs.graduationproject.sys.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -14,5 +16,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
-
+    //多表查询 通过用户名查询角色信息
+    List<User> queryOneByUserName(String userName);
 }
