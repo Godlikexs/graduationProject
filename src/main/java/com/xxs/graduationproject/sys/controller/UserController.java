@@ -26,9 +26,9 @@ public class UserController {
     @CrossOrigin
     @PostMapping(value = "/login")
     public Result login( @RequestBody User user) {
-
-        System.out.println(user);
-        return userService.login(user);
+        //调用业务层执行登录业务
+        Result login = userService.login(user);
+        return login;
     }
 
 }

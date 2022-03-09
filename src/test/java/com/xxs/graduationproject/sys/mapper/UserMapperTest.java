@@ -14,9 +14,7 @@ class UserMapperTest {
     private UserMapper userMapper;
     @Test
     void queryOneByUserName() {
-        List<User> admin = userMapper.queryOneByUserName("admin");
-        for (User user : admin) {
-            System.out.println(user);
-        }
+        User admin = userMapper.queryOneByUserName("admin");
+        System.err.println(admin);
     }
 }

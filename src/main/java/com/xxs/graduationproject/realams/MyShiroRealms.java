@@ -1,5 +1,6 @@
 package com.xxs.graduationproject.realams;
 
+import com.xxs.graduationproject.sys.entity.Role;
 import com.xxs.graduationproject.sys.entity.User;
 import com.xxs.graduationproject.sys.mapper.UserMapper;
 
@@ -28,17 +29,16 @@ public class MyShiroRealms extends AuthorizingRealm {
 
     @Override//认证信息
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        /*String username = (String) token.getPrincipal();//获取当前用户输入的登录名
+        String username = (String) token.getPrincipal();//获取当前用户输入的登录名
         User user = userMapper.queryOneByUserName(username);//用户信息及角色信息
-
         if(user==null){
             //没有找到对应的用户
             throw new UnknownAccountException("没有对应用户"+username);
         }
         //创建认证信息
         //三参数构造方法 第一个参数当前用户信息user 第二个参数：系统中保存暗文密码 第三个参数:salt 第四个参数  固定 当前realm的名称 getName()
-        ByteSource salt = ByteSource.Util.bytes(user.getSalt());*/
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(/*user,user.getPassword(), salt,getName()*/);
+        ByteSource salt = ByteSource.Util.bytes(user.getSolt());
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user,user.getPassword(), salt,getName());
         //SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user,user.getPassword(),getName());
         return info;
     }
@@ -48,7 +48,7 @@ public class MyShiroRealms extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         //返回当前已登录的用户的角色和权限信息
         //获取当前已登录的用户
-        /*User loginUser = (User) principals.getPrimaryPrincipal();// return info;
+        User loginUser = (User) principals.getPrimaryPrincipal();// return info;
         //记录角色信息
         Set<String> roles = new HashSet<>();
         //记录权限信息（未完善）
@@ -62,10 +62,9 @@ public class MyShiroRealms extends AuthorizingRealm {
         }
 
         //创建授权信息
-
-        simpleAuthorizationInfo.setRoles(roles);
-        simpleAuthorizationInfo.setStringPermissions(perms);//（未完善）*/
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        simpleAuthorizationInfo.setRoles(roles);
+        simpleAuthorizationInfo.setStringPermissions(perms);//（未完善）
         return simpleAuthorizationInfo;
     }
 

@@ -18,6 +18,9 @@ public class Result {
     //省略getter、setter、构造方法
 
 
+    public Result() {
+    }
+
     public Result(Integer code, String message, Object data) {
         this.code = code;
         this.message = message;
