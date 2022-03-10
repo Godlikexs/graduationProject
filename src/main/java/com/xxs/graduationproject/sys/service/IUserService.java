@@ -4,6 +4,7 @@ import com.xxs.graduationproject.common.Result;
 import com.xxs.graduationproject.sys.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -19,4 +20,6 @@ public interface IUserService extends IService<User> {
     public Result login(User user);
 
     public  Result phoneLogin(User user);
+
+    public Result emailLogin(User user, HttpSession httpSession);
 }

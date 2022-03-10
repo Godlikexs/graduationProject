@@ -6,6 +6,7 @@ import com.xxs.graduationproject.sys.entity.User;
 import com.xxs.graduationproject.sys.mapper.UserMapper;
 import com.xxs.graduationproject.sys.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xxs.graduationproject.utils.EmailSend;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -19,7 +20,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -40,6 +43,9 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
 
     @Resource//注入redis
     private RedisTemplate<String,Object> redisTemplate;
+
+    @Resource
+    private EmailSend emailSend;//注入邮箱工具类
 
     @Override
     public Result login(User user) {
@@ -93,7 +99,35 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
         result.setCode(200);
         result.setMessage("用户登录成功");
         return result;
+    }
 
+    @Override//实现邮箱登录
+    public Result emailLogin(User user, HttpSession httpSession) {
+        //调用工具类执行登录业务 @Autowired
+        //生成四位随机数
+        String a="";
+        for (int i = 0; i < 4; i++) {
+            int code = new Random().nextInt(10);
+            a+=code;
+        }
+
+        boolean send = emailSend.send(user.getEmail(), "小松网", "您的验证码是"+a);
+        if(send){//如果为真，发送成功
+
+            System.out.println("发送成功");
+            result.setData(a);
+            result.setCode(200);
+            result.setMessage("邮箱发送成功");
+            //放入会话域 设置失效时间
+            httpSession.setAttribute("code",a);
+            httpSession.setMaxInactiveInterval(60000);
+        }else{
+            System.out.println("发送失败");
+            result.setData(a);
+            result.setCode(500);
+            result.setMessage("邮箱发送失败");
+        }
+        return result;
     }
 
     @Override
