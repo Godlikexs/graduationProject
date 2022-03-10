@@ -47,6 +47,8 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
     @Resource
     private EmailSend emailSend;//注入邮箱工具类
 
+
+
     @Override
     public Result login(User user) {
         Result result = new Result();
@@ -101,16 +103,25 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
         return result;
     }
 
-    @Override//实现邮箱登录
-    public Result emailLogin(User user, HttpSession httpSession) {
+    @Override//获取验证码
+    public Result getEmail(User user,HttpSession httpSession) {
         //调用工具类执行登录业务 @Autowired
+        //判断邮箱是否注册
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        QueryWrapper<User> email = userQueryWrapper.eq("email", user.getEmail());
+        User user1 = userMapper.selectOne(email);
+        if(user1==null){
+            result.setCode(500);
+            result.setMessage("邮箱尚未注册");
+            return result;
+        }
         //生成四位随机数
         String a="";
         for (int i = 0; i < 4; i++) {
             int code = new Random().nextInt(10);
             a+=code;
         }
-
+        //给邮箱发送验证码
         boolean send = emailSend.send(user.getEmail(), "小松网", "您的验证码是"+a);
         if(send){//如果为真，发送成功
 
@@ -120,7 +131,7 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
             result.setMessage("邮箱发送成功");
             //放入会话域 设置失效时间
             httpSession.setAttribute("code",a);
-            httpSession.setMaxInactiveInterval(60000);
+            httpSession.setMaxInactiveInterval(300000);
         }else{
             System.out.println("发送失败");
             result.setData(a);
@@ -131,8 +142,28 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
     }
 
     @Override
-    public Result phoneLogin(User user) {
-        //密码次数错误的键名
+    public Result emailLogin(User user,HttpSession httpSession) {
+        String userCode = user.getEmail();//用户输入验证码
+        if(userCode==null&&userCode.equals("")){
+            result.setCode(500);
+            result.setMessage("验证码不能为空");
+            return result;
+        }
+        String code = (String) httpSession.getAttribute("code");
+        if(code==null){
+            result.setCode(500);
+            result.setMessage("验证码失效");
+            return result;
+        }
+        if(userCode.equals(code)){//验证码正确
+            //调用login方法完成shiro授权认证
+            result.setCode(200);
+            result.setMessage("登录成功");
+        }
+        return result;
+    }
+    //redis实现登录次数限制代码
+    /* //密码次数错误的键名
         String keyWord = user.getUserName()+":num";
         String keyWordLock = user.getUserName()+":lock";
         //判断是否锁定
@@ -171,7 +202,10 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
                 result.setCode(500);
                 result.setMessage("你的密码输入错误剩余"+(3-integer));
             }
-        }
+        }*/
+    @Override
+    public Result getPhone(User user) {
+
 
 
         return result;

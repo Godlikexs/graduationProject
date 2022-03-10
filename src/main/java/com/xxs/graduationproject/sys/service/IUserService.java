@@ -19,7 +19,9 @@ public interface IUserService extends IService<User> {
 
     public Result login(User user);
 
-    public  Result phoneLogin(User user);
+    public  Result getPhone(User user);
 
-    public Result emailLogin(User user, HttpSession httpSession);
+    public Result getEmail(User user,HttpSession httpSession);
+
+    Result emailLogin(User user,HttpSession httpSession);
 }
