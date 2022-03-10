@@ -15,9 +15,12 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -29,8 +32,14 @@ import java.util.List;
  */
 @Service
 public class UserService extends ServiceImpl<UserMapper, User> implements IUserService {
-    @Autowired
+    @Resource
+    private Result result;//注入响应结果集
+
+    @Resource
     private UserMapper userMapper;
+
+    @Resource//注入redis
+    private RedisTemplate<String,Object> redisTemplate;
 
     @Override
     public Result login(User user) {
@@ -85,6 +94,53 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
         result.setMessage("用户登录成功");
         return result;
 
+    }
+
+    @Override
+    public Result phoneLogin(User user) {
+        //密码次数错误的键名
+        String keyWord = user.getUserName()+":num";
+        String keyWordLock = user.getUserName()+":lock";
+        //判断是否锁定
+        Object o = redisTemplate.opsForValue().get(keyWordLock);
+        if(o!=null){
+            //获取失效事件
+            Long time = redisTemplate.getExpire(keyWordLock,TimeUnit.SECONDS);
+            result.setCode(500);
+            result.setMessage("你的账号被锁定,还剩余"+time+"秒");
+            return result;
+        }
+        if(user.getUserName().equals("admin")&&user.getPassword().equals("123456")){
+            //删除缓存
+            redisTemplate.delete(keyWord);
+            redisTemplate.delete(keyWordLock);
+            //登陆成功
+            //存入用户信息
+            redisTemplate.opsForValue().set(user.getUserName()+":info",user,30,TimeUnit.MINUTES);
+            //代替session会话域
+            result.setCode(200);
+            result.setMessage("登陆成功");
+
+        }else{
+            //记录错误一次
+            redisTemplate.opsForValue().increment(keyWord,1);
+            //获取设置次数
+
+            Integer integer = (Integer) redisTemplate.opsForValue().get(keyWord);
+            if (integer==3){
+                //删除错误次数
+                redisTemplate.delete(keyWord);
+                result.setCode(500);
+                redisTemplate.opsForValue().set(keyWordLock,5,2, TimeUnit.MINUTES);
+                result.setMessage("你的密码输入错误达到上限，已经锁定,俩分钟后尝试");
+            }else{
+                result.setCode(500);
+                result.setMessage("你的密码输入错误剩余"+(3-integer));
+            }
+        }
+
+
+        return result;
     }
 }
 

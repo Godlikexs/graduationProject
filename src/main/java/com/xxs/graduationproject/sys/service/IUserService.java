@@ -17,4 +17,6 @@ import java.util.List;
 public interface IUserService extends IService<User> {
 
     public Result login(User user);
+
+    public  Result phoneLogin(User user);
 }

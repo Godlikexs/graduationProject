@@ -71,6 +71,7 @@ public class ShiroConfig {
 
         //登录请求的url匿名访问
         definition.addPathDefinition("/api/login", "anon");
+        definition.addPathDefinition("/api/emailLogin", "anon");
         //静态资源都是匿名可以访问
 
         //剩余后台资源，需要认证来能访问

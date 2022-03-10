@@ -1,6 +1,7 @@
 package com.xxs.graduationproject.common;
 
 import lombok.Data;
+import org.springframework.stereotype.Repository;
 
 /**
  * @Author: xxs
@@ -8,6 +9,7 @@ import lombok.Data;
  * @Description: 统一结果封装
  **/
 @Data
+@Repository
 public class Result {
     //相应码
     private Integer code;

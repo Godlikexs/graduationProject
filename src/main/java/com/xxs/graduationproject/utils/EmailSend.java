@@ -6,14 +6,19 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
-@Component
-public class EmailSend {
+@Component//采用spring组件不能自己new对象 @VALUE会失效
+public  class EmailSend {
     //注入邮件发送服务类
     @Autowired
-    JavaMailSender javaMailSender;
+     JavaMailSender javaMailSender;
+
+
+    private  String myEmail;
 
     @Value("${spring.mail.username}")
-    private String myEmail;
+    public void setMyEmail(String myEmail) {
+        this.myEmail = myEmail;
+    }
 
     /**
      *

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
@@ -15,10 +16,8 @@ class UserServiceTest {
     UserService userService;
     @Test
     void selectAll() {
-        User user = new User();
-        user.setUserName("admin");
-        user.setPassword("123456");
-        Result login = userService.login(user);
-        System.out.println(login);
+
     }
+
+
 }
