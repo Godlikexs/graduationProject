@@ -41,11 +41,11 @@ public class TenxunSmsSend {
         //接收短信手机号
         sendSmsRequest.setPhoneNumberSet(userPhone);
         //个人短信模板模板Id
-        sendSmsRequest.setTemplateId("1314714");
+        sendSmsRequest.setTemplateId("********");
         //个人短信标题
-        sendSmsRequest.setSignName("熊小松的公众号");
+        sendSmsRequest.setSignName("********");
         //个人短信发送SDK
-        sendSmsRequest.setSmsSdkAppId("1400636156");
+        sendSmsRequest.setSmsSdkAppId("********");
         //生成四位随机数
         String a="";
         for (int i = 0; i < 4; i++) {
