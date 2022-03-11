@@ -17,11 +17,15 @@ import java.util.List;
  */
 public interface IUserService extends IService<User> {
 
-    public Result login(User user);
+    Result login(User user);//用户名密码登录
 
-    public  Result getPhone(User user);
+    Result getPhone(User user,HttpSession httpSession);//获取手机验证码
 
-    public Result getEmail(User user,HttpSession httpSession);
+    Result phoneLogin(User user,HttpSession httpSession);//手机号登录
 
-    Result emailLogin(User user,HttpSession httpSession);
+    Result getEmail(User user,HttpSession httpSession);//获取邮箱验证码
+
+    Result emailLogin(User user,HttpSession httpSession);//邮箱登录
+
+   /*Result viewNumber(User user);//redis访问量查询*/
 }

@@ -32,6 +32,7 @@ public class TenxunSmsSend {
     private Result result;
 
     public Result send(User user)throws TencentCloudSDKException{
+        HashMap<String, Object> hashMap = new HashMap<>();
         //创建短信对象  自动装配result
         //创建短信发送请求对象
         SendSmsRequest sendSmsRequest = new SendSmsRequest();
@@ -62,9 +63,10 @@ public class TenxunSmsSend {
                 List<HashMap<String,Object>> list = (List<HashMap<String,Object>> )map.get("SendStatusSet");
                 if (list.get(0).get("Code").equals("Ok")){
                     result.setCode(200);
+                    result.setData(a);
                     result.setMessage("腾讯短信发送成功");
                 }else{
-                    result.setData(200);
+                    result.setCode(500);
                     result.setMessage("腾讯短信发送失败");
                 }
             } catch (JsonProcessingException e) {

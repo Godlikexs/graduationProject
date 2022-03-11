@@ -1,12 +1,14 @@
 package com.xxs.graduationproject.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import com.xxs.graduationproject.common.Result;
 import com.xxs.graduationproject.sys.entity.User;
 import com.xxs.graduationproject.sys.mapper.UserMapper;
 import com.xxs.graduationproject.sys.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xxs.graduationproject.utils.EmailSend;
+import com.xxs.graduationproject.utils.TenxunSmsSend;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -16,7 +18,10 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -46,6 +51,9 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
 
     @Resource
     private EmailSend emailSend;//注入邮箱工具类
+
+    @Resource
+    private TenxunSmsSend tenxunSmsSend;
 
 
 
@@ -159,9 +167,45 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
             //调用login方法完成shiro授权认证
             result.setCode(200);
             result.setMessage("登录成功");
+
         }
         return result;
     }
+
+   /* @Override  redis实现用户单日浏览量
+    public Result viewNumber(User user) {
+        //用户是否单日首次登录
+        String key = "isLogin";
+        String number = "viewNumber";
+        //查询浏览量
+        ValueOperations<String, Object> value = redisTemplate.opsForValue();
+        Object o = value.get(number);
+        if(number==null){
+            //为浏览量设置初始值
+            value.set(number,0);
+        }
+
+        SetOperations<String, Object> set = redisTemplate.opsForSet();//set数据类型操作
+        //判断是否登录过   获取用户id
+        Subject subject = SecurityUtils.getSubject();
+        User principal = (User) subject.getPrincipal();
+        Integer id = principal.getId();
+        //查询用户ID是否存放在key
+        if(!set.isMember(key,id)){
+            //未登录
+
+            set.add(key,id);//存放用户id
+            value.increment(number,1);//首次登录浏览次数加一
+            Object o1 = value.get(number);//查询当前浏览量返回
+            result.setData(o1);//set操作集尚未向导清除缓存
+        }
+
+
+
+        return result;
+    }*/
+
+
     //redis实现登录次数限制代码
     /* //密码次数错误的键名
         String keyWord = user.getUserName()+":num";
@@ -204,10 +248,55 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
             }
         }*/
     @Override
-    public Result getPhone(User user) {
+    public Result getPhone(User user,HttpSession httpSession) {
+        //判断手机号是否注册
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        QueryWrapper<User> phone = userQueryWrapper.eq("phone", user.getPhone());
+        User user1 = userMapper.selectOne(phone);//通过手机查询用户是否注册
+        if(user1==null){
+            result.setCode(500);
+            result.setMessage("手机尚未注册");
+            return result;
+        }
 
+        //调用腾讯云工具类
+        try {
+            Result send = tenxunSmsSend.send(user);
+            String data = (String) send.getData();
+            //放入会话域 设置失效时间
+            httpSession.setAttribute("phoneCode",data);
+            httpSession.setMaxInactiveInterval(300000);
+            return result;
+        } catch (TencentCloudSDKException e) {
+            e.printStackTrace();
+        }
+        result.setCode(500);
+        result.setMessage("验证码发送失败");
+        return result;
+    }
 
-
+    @Override
+    public Result phoneLogin(User user, HttpSession httpSession) {
+        String phone = user.getPhone();//用户输入验证码
+        if(phone == null) {
+            assert phone != null;
+            if (phone.equals("")) {
+                result.setCode(500);
+                result.setMessage("验证码不能为空");
+                return result;
+            }
+        }
+        String code = (String) httpSession.getAttribute("phoneCode");
+        if(code==null){
+            result.setCode(500);
+            result.setMessage("验证码失效");
+            return result;
+        }
+        if(phone.equals(code)){//验证码正确
+            //调用login方法完成shiro授权认证
+            result.setCode(200);
+            result.setMessage("登录成功");
+        }
         return result;
     }
 }

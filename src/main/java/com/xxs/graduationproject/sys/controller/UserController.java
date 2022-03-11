@@ -36,18 +36,18 @@ public class UserController {
         return login;
     }
 
-    @CrossOrigin
-    @PostMapping(value = "/getEmail")//获取邮箱验证码
-    public Result getEmail(@RequestBody User user, HttpSession httpSession) {// @RequestBody 接收json格式
+   /* @CrossOrigin*/
+    @GetMapping(value = "/getEmail")//获取邮箱验证码
+    public Result getEmail( User user, HttpSession httpSession) {// @RequestBody 接收json格式
         //获取验证码
         //判断email是否存在
         Result result = userService.getEmail(user,httpSession);
         return result;
     }
 
-    @CrossOrigin
-    @PostMapping(value = "/emailLogin")//邮箱登录
-    public Result emailLogin(@RequestBody User user,HttpSession httpSession) {// @RequestBody 接收json格式
+ /*   @CrossOrigin*/
+    @GetMapping(value = "/emailLogin")//邮箱登录
+    public Result emailLogin( User user,HttpSession httpSession) {// @RequestBody 接收json格式
 
         //获取验证码
         Result result = userService.emailLogin(user,httpSession);
@@ -60,11 +60,18 @@ public class UserController {
         Result result = userService.phoneLogin(user);
         return result;
     }*/
-
-    @PostMapping(value = "/getPhone")//测试redis 实现登录次数限制 已废弃
-    public Result getPhone( @RequestBody User user) {
+    @CrossOrigin
+    @GetMapping(value = "/getPhone")
+    public Result getPhone( User user,HttpSession httpSession) {
         //调用业务层执行登录业务
-        Result result = userService.getPhone(user);
+        Result result = userService.getPhone(user,httpSession);
+        return result;
+    }
+    @CrossOrigin
+    @GetMapping(value = "/phoneLogin")
+    public Result phoneLogin( User user,HttpSession httpSession) {
+        //调用业务层执行登录业务
+        Result result = userService.getPhone(user,httpSession);
         return result;
     }
 

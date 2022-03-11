@@ -1,3 +1,4 @@
+/*
 package com.xxs.graduationproject.config;
 
 
@@ -19,10 +20,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+*/
 /*
  *   Shiro相关配置bean
- * */
-@Configuration
+ * *//*
+
+//@Configuration
 public class ShiroConfig {
 
     //配置凭证匹配器
@@ -59,8 +62,9 @@ public class ShiroConfig {
     }
 
     //配置过滤链：shiro会根据添加的Definition的先后顺序执行验证，如果满足一条规则，过滤结束
-    @Bean
-    public DefaultShiroFilterChainDefinition shiroFilterChainDefinition(){
+  */
+/*  @Bean
+    public ShiroFilterFactoryBean  shiroFilterChainDefinition(){
         DefaultShiroFilterChainDefinition definition = new DefaultShiroFilterChainDefinition();
         //不做配置，任何资源都放行
         //第一个参数配置url的样式， 第二个参数过滤器
@@ -77,7 +81,8 @@ public class ShiroConfig {
         //剩余后台资源，需要认证来能访问
         definition.addPathDefinition("/**", "authc");
         return definition;
-    }
+    }*//*
+
 
     //thymeleaf模板中的shiro属性或标签生效
     @Bean
@@ -86,3 +91,4 @@ public class ShiroConfig {
     }
 
 }
+*/

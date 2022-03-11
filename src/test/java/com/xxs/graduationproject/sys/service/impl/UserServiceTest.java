@@ -7,10 +7,11 @@ import com.xxs.graduationproject.utils.TenxunSmsSend;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
@@ -18,16 +19,19 @@ class UserServiceTest {
 
     @Autowired
     TenxunSmsSend tenxunSmsSend;
+
+    @Autowired
+    RedisTemplate<String,Object> redisTemplate;
     @Test
     void selectAll() {
-        User user = new User();
-        user.setPhone("15508233112");
-        try {
-            Result send = tenxunSmsSend.send(user);
-            System.out.println(send);
-        } catch (TencentCloudSDKException e) {
-            e.printStackTrace();
-        }
+
+        SetOperations<String, Object> set = redisTemplate.opsForSet();
+     set.add("islogin",5);
+
+        Boolean islogin = set.isMember("islogin", 5);
+        System.out.println(islogin
+        );
+
     }
 
 
