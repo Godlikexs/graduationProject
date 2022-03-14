@@ -1,8 +1,12 @@
 package com.xxs.graduationproject.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import org.apache.shiro.authz.Permission;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -30,7 +34,16 @@ public class Power implements Serializable {
     private Integer nodeId;
 
     private String icon;
+    @TableField(exist = false)//存储自己菜单权限
+    private List<Power> children;
 
+    public List<Power> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Power> childrens) {
+        this.children = childrens;
+    }
 
     public Integer getPowerId() {
         return powerId;

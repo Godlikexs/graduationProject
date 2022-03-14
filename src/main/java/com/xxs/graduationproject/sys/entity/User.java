@@ -49,6 +49,16 @@ public class User implements Serializable {
 
     private  String phone;
 
+    private  String state;
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     @TableField(exist = false)//不是表的字段
     private List<Role> roles;//用于结果集封装角色信息
 
@@ -144,6 +154,7 @@ public class User implements Serializable {
                 ", nick='" + nick + '\'' +
                 ", solt='" + solt + '\'' +
                 ", phone='" + phone + '\'' +
+                ", state='" + state + '\'' +
                 ", roles=" + roles +
                 '}';
     }

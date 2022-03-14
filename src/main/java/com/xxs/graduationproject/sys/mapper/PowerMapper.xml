@@ -12,5 +12,21 @@
         <result column="node_id" property="nodeId" />
         <result column="icon" property="icon" />
     </resultMap>
+    <select id="queryOneByRoleName" resultType="com.xxs.graduationproject.sys.entity.Power">
+        SELECT
+            power.power_id,
+            power.power_name,
+            power.power_index,
+            power.power_url,
+            power.node_id,
+            power.parent_id,
+            power.icon
+        FROM
+            power
+                LEFT JOIN role_power  ON role_power.permission_id=power.power_id
+                LEFT JOIN role  ON role_power.role_id=role.role_id
+        WHERE
+            role.role_name=#{roleName}
+    </select>
 
 </mapper>

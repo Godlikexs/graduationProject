@@ -13,6 +13,7 @@
         <result column="nick" property="nick" />
         <result column="solt" property="solt"/>
         <result column="phone" property="phone"/>
+        <result column="state" property="state"/>
         <collection property="roles" ofType="com.xxs.graduationproject.sys.entity.Role">
             <result column="role_id" property="roleId"/>
             <result column="role_name" property="roleName"/>
@@ -30,6 +31,7 @@
             address,
             solt,
             email,
+            state,
             role_id,
             role_name,
             role_code

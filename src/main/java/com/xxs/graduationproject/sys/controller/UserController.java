@@ -3,8 +3,12 @@ package com.xxs.graduationproject.sys.controller;
 
 import com.xxs.graduationproject.common.Result;
 import com.xxs.graduationproject.sys.entity.User;
+import com.xxs.graduationproject.sys.mapper.PowerMapper;
 import com.xxs.graduationproject.sys.service.IUserService;
+import com.xxs.graduationproject.sys.service.impl.PowerService;
 import com.xxs.graduationproject.utils.EmailSend;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +38,17 @@ public class UserController {
         //调用业务层执行登录业务
         Result login = userService.login(user);
         return login;
+    }
+
+    @CrossOrigin//用户名密码 shiro认证登录
+    @GetMapping(value = "/loginOut")
+    public Result loginOut( User user) {//后端shiro登出
+        //调用业务层执行登录业务
+        SecurityUtils.getSubject().getSession().removeAttribute("loginUser");
+        Result result = new Result();
+        result.setCode(200);
+        result.setMessage("登出成功");
+        return result;
     }
 
    /* @CrossOrigin*/
@@ -74,6 +89,15 @@ public class UserController {
         Result result = userService.getPhone(user,httpSession);
         return result;
     }
+
+    @CrossOrigin
+    @PostMapping(value = "/register")
+    public Result register(@RequestBody User user){//接收前端请求参数能多不能少
+        //接收前端参数 调用方法
+        Result register = userService.register(user);
+        return register;
+    }
+
 
 }
 

@@ -28,4 +28,6 @@ public interface IUserService extends IService<User> {
     Result emailLogin(User user,HttpSession httpSession);//邮箱登录
 
    /*Result viewNumber(User user);//redis访问量查询*/
+
+    Result register(User user);//注册用户
 }

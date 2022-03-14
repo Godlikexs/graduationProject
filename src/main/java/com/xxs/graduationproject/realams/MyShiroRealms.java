@@ -1,11 +1,15 @@
 package com.xxs.graduationproject.realams;
 
+import com.xxs.graduationproject.sys.entity.Power;
 import com.xxs.graduationproject.sys.entity.Role;
 import com.xxs.graduationproject.sys.entity.User;
+import com.xxs.graduationproject.sys.mapper.PowerMapper;
+import com.xxs.graduationproject.sys.mapper.RoleMapper;
 import com.xxs.graduationproject.sys.mapper.UserMapper;
 
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -13,6 +17,7 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 //shiro框架找我们的系统要认证相关信息
@@ -20,12 +25,16 @@ public class MyShiroRealms extends AuthorizingRealm {
 
     private UserMapper userMapper;
 
-    public UserMapper getUserMapper() {
-        return userMapper;
-    }
     @Autowired
     public void setUserMapper(UserMapper userMapper) {
         this.userMapper = userMapper;
+    }
+
+    private PowerMapper powerMapper;
+
+    @Autowired
+    public void setPowerMapper(PowerMapper powerMapper) {
+        this.powerMapper = powerMapper;
     }
 
     @Override//认证信息
@@ -59,13 +68,17 @@ public class MyShiroRealms extends AuthorizingRealm {
             for (Role one : loginUser.getRoles()) {
                 //使用角色名作为shiro系统的一类权限信息
                 roles.add(one.getRoleName());
+
             }
         }
-
-        //创建授权信息
+        //查询权限通过角色名
+/*        List<Power> powers = powerMapper.queryOneByRoleName(one.getRoleName());
+        for (Power power : powers) {
+            perms.add(power);
+        }*/
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.setRoles(roles);
-        simpleAuthorizationInfo.setStringPermissions(perms);//（未完善）
+        simpleAuthorizationInfo.setStringPermissions(perms);
         return simpleAuthorizationInfo;
     }
 

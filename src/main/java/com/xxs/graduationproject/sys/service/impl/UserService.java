@@ -8,6 +8,7 @@ import com.xxs.graduationproject.sys.mapper.UserMapper;
 import com.xxs.graduationproject.sys.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xxs.graduationproject.utils.EmailSend;
+import com.xxs.graduationproject.utils.Md5Util;
 import com.xxs.graduationproject.utils.TenxunSmsSend;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -296,6 +297,60 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
             //调用login方法完成shiro授权认证
             result.setCode(200);
             result.setMessage("登录成功");
+        }
+        return result;
+    }
+
+    @Override
+    public Result register(User user) {
+        //判断参数是否为空
+        //设置用户名唯一索引 查询用户名是否注册
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<User> user_name = queryWrapper.eq("user_name", user.getUserName());
+        User user1 = userMapper.selectOne(user_name);
+        if(user1!=null){//查询出的用户名不为空
+            result.setCode(500);
+            result.setMessage("登录名存在");
+            return result;
+        }
+        if(user.getUserName()==null){
+            result.setCode(500);
+            result.setMessage("登录名为空");
+            return result;
+        }
+        if(user.getPassword()==null){
+            result.setCode(500);
+            result.setMessage("密码为空");
+            return result;
+        }
+        if(user.getPhone()==null){
+            result.setCode(500);
+            result.setMessage("电话号码为空");
+            return result;
+        }
+        if(user.getEmail()==null){
+            result.setCode(500);
+            result.setMessage("邮箱名为空");
+            return result;
+        }
+        if(user.getAddress()==null){
+            result.setCode(500);
+            result.setMessage("地址为空");
+            return result;
+        }
+        //生成随件二位数盐值
+        Random random = new Random();
+        int slat = random.nextInt(100);
+        user.setSolt(""+slat);
+        user.setNick(user.getUserName());//默认昵称为用户名
+        String s = Md5Util.md5(user.getPassword(), user.getSolt());
+        user.setPassword(s);//将密码Md5加密存入
+        //调用mapper添加用户
+        int insert = userMapper.insert(user);
+        if (insert!=0){
+            //影响行数》0添加成功
+            result.setCode(200);
+            result.setMessage("注册成功");
         }
         return result;
     }
