@@ -41,6 +41,7 @@ public class MyShiroRealms extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String username = (String) token.getPrincipal();//获取当前用户输入的登录名
         User user = userMapper.queryOneByUserName(username);//用户信息及角色信息
+        System.err.println("登录用户："+user);
         if(user==null){
             //没有找到对应的用户
             throw new UnknownAccountException("没有对应用户"+username);

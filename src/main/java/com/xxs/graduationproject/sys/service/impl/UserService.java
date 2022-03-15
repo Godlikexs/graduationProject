@@ -1,6 +1,7 @@
 package com.xxs.graduationproject.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import com.xxs.graduationproject.common.Result;
 import com.xxs.graduationproject.sys.entity.User;
@@ -352,6 +353,31 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
             result.setCode(200);
             result.setMessage("注册成功");
         }
+        return result;
+    }
+
+    @Override
+    public Result editUserByUserName(User user) {
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+
+        //将密码Md5加密存储
+        //通过用户名获取盐值
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_name",user.getUserName());
+        queryWrapper.select("solt");
+        User user1 = userMapper.selectOne(queryWrapper);
+        String s = Md5Util.md5(user.getPassword(), user1.getSolt());
+        user.setPassword(s);
+        updateWrapper.eq("user_name",user.getUserName());
+        int update = userMapper.update(user, updateWrapper);
+        if (update>0){
+            result.setCode(200);
+            result.setMessage("修改成功");
+        }else{
+            result.setCode(200);
+            result.setMessage("修改失败");
+        }
+
         return result;
     }
 }

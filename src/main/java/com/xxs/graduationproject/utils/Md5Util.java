@@ -19,7 +19,7 @@ public class Md5Util {
     }
 
     public static void main(String[] args) {
-        String password = "123456";
+        String password = "179516";
         String salt ="90";
         String s = md5(password, salt);
         System.out.println(s);

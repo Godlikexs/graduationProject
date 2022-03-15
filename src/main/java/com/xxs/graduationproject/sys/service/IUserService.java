@@ -30,4 +30,6 @@ public interface IUserService extends IService<User> {
    /*Result viewNumber(User user);//redis访问量查询*/
 
     Result register(User user);//注册用户
+
+    Result editUserByUserName(User user);//修改用户密码，昵称通过用户名
 }

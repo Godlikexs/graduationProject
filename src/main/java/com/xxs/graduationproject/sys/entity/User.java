@@ -49,9 +49,19 @@ public class User implements Serializable {
 
     private  String phone;
 
-    private  String state;
+    private  String state;//账号状态
 
-    public String getState() {
+    private  String avatar;//账号头像地址
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getState() {//账号状态信息
         return state;
     }
 

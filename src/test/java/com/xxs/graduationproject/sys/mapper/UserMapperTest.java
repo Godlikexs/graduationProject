@@ -14,7 +14,7 @@ class UserMapperTest {
     private UserMapper userMapper;
     @Test
     void queryOneByUserName() {
-            userMapper.queryOneByUserName("admin");
+
     }
 
 }

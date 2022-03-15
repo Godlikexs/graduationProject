@@ -98,6 +98,12 @@ public class UserController {
         return register;
     }
 
+    @CrossOrigin
+    @PostMapping(value = "/edit")//修改当前用户昵称
+    public Result editNick(@RequestBody User user){//接收前端请求返回当前用户信息
+        Result result = userService.editUserByUserName(user);
+        return result;
+    }
 
 }
 
