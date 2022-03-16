@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xxs.graduationproject.sys.mapper.XeGoodsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xxs.graduationproject.sys.entity.XeGoods">
+        <id column="id" property="id" />
+        <result column="shop_id" property="shopId" />
+        <result column="cate_id" property="cateId" />
+        <result column="loca_id" property="locaId" />
+        <result column="main_title" property="mainTitle" />
+        <result column="sub_title" property="subTitle" />
+        <result column="price" property="price" />
+        <result column="old_price" property="oldPrice" />
+        <result column="buy" property="buy" />
+        <result column="goods_img" property="goodsImg" />
+    </resultMap>
+
+</mapper>

@@ -1,5 +1,6 @@
 package com.xxs.graduationproject.sys.service;
 
+import com.xxs.graduationproject.common.Result;
 import com.xxs.graduationproject.sys.entity.OrderCart;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IOrderCartService extends IService<OrderCart> {
 
+    Result selectNumberByUserIdAndState(Integer id);//查询用户下状态为0尚未下单的数量
 }

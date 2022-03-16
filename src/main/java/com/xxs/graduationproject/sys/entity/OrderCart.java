@@ -30,7 +30,7 @@ public class OrderCart implements Serializable {
 
     private Integer goodsNumber;
 
-    private BigDecimal goodsPrice;
+    private BigDecimal goodsPrice;//购物车小计
 
     /**
      * 下单后就不在购物车；

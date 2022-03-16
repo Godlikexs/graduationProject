@@ -13,5 +13,19 @@
         <result column="goods_price" property="goodsPrice" />
         <result column="state" property="state" />
     </resultMap>
+    <select id="selectNumberByUserIdAndState" resultType="java.lang.Integer">
+        SELECT
+            COUNT(order_cart.cart_id)
+        FROM
+            order_cart
+                left JOIN
+            user_cart
+            on user_cart.cart_id=order_cart.cart_id
+                LEFT JOIN
+            `user`
+            ON `user`.id=user_cart.user_id
+        WHERE
+            `user`.id=#{id} AND order_cart.state=0
+    </select>
 
 </mapper>

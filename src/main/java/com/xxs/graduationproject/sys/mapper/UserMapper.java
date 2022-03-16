@@ -18,4 +18,5 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<User> {
     //多表查询 通过用户名查询角色信息
     User queryOneByUserName(String userName);
+
 }

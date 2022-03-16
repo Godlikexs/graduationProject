@@ -32,4 +32,7 @@ public interface IUserService extends IService<User> {
     Result register(User user);//注册用户
 
     Result editUserByUserName(User user);//修改用户密码，昵称通过用户名
+
+    //通过用户名查询用户id
+    int selectIdByUserName(User user);
 }

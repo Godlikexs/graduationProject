@@ -380,5 +380,13 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
 
         return result;
     }
+
+    @Override
+    public int selectIdByUserName(User user) {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("user_name",user.getUserName());
+        User user1 = userMapper.selectOne(userQueryWrapper);
+        return user1.getId();
+    }
 }
 

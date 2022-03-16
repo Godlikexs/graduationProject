@@ -68,17 +68,24 @@ public class MyShiroConfig {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         bean.setSecurityManager(sm);
         //配置必须登录
-        bean.setLoginUrl("/error/login");
+        bean.setLoginUrl("/error/loginView");
         //配置无此权限访问页面
         bean.setUnauthorizedUrl("/error/unAuth");
 
         //配置权限的map
         HashMap<String, String> map = new HashMap<String, String>();
 
-        //登录匿名访问
-        map.put("/api/**","anon");
+        //登录匿名访问   authc 需要认证访问
+        map.put("/api/login","anon");
+        map.put("/api/getEmail","anon");//登录方法可以匿名访问
+        map.put("/api/emailLogin","anon");
+        map.put("/api//getPhone","anon");
+        map.put("/api/phoneLogin","anon");
+        map.put("/api/loginOut","authc");//登出方法需登录
+        map.put("/static/**","anon");//静态资源匿名访问
+        map.put("/**","authc");//所有请求拦截
 
-        map.put("/**","authc");
+
         bean.setFilterChainDefinitionMap(map);
         return bean;
     }

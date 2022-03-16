@@ -1,10 +1,13 @@
 package com.xxs.graduationproject.sys.service.impl;
 
+import com.xxs.graduationproject.common.Result;
 import com.xxs.graduationproject.sys.entity.OrderCart;
 import com.xxs.graduationproject.sys.mapper.OrderCartMapper;
 import com.xxs.graduationproject.sys.service.IOrderCartService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * <p>
@@ -16,5 +19,19 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OrderCartService extends ServiceImpl<OrderCartMapper, OrderCart> implements IOrderCartService {
+    @Resource
+    private OrderCartMapper orderCartMapper;
 
+    @Resource
+    private Result result;
+    @Override
+    public Result selectNumberByUserIdAndState(Integer id) {
+        int i = orderCartMapper.selectNumberByUserIdAndState(id);
+        if (i>0){
+            result.setMessage("查询成功");
+            result.setCode(200);
+            result.setData(i);
+        }
+        return result;
+    }
 }

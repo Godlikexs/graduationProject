@@ -37,7 +37,7 @@ public class AutoGeneratorUtil {
     private static String userName = "root";
     private static String password = "123456";
     private static String url = "jdbc:mysql://localhost:3306/graduationproject?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&";
-    private static String[] tables = {"order_cart"};//要生成的表
+    private static String[] tables = {"xe_goods"};//要生成的表
     /**
      * 生成包路径
      */
