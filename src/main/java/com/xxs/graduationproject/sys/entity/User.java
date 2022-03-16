@@ -53,6 +53,7 @@ public class User implements Serializable {
 
     private  String avatar;//账号头像地址
 
+
     public String getAvatar() {
         return avatar;
     }

@@ -1,5 +1,6 @@
 package com.xxs.graduationproject.sys.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xxs.graduationproject.common.Result;
 import com.xxs.graduationproject.sys.entity.OrderCart;
 import com.xxs.graduationproject.sys.mapper.OrderCartMapper;
@@ -25,10 +26,11 @@ public class OrderCartService extends ServiceImpl<OrderCartMapper, OrderCart> im
 
     @Resource
     private Result result;
+
     @Override
     public Result selectNumberByUserIdAndState(Integer id) {
         int i = orderCartMapper.selectNumberByUserIdAndState(id);
-        if (i>0){
+        if (i > 0) {
             result.setMessage("查询成功");
             result.setCode(200);
             result.setData(i);
@@ -39,11 +41,19 @@ public class OrderCartService extends ServiceImpl<OrderCartMapper, OrderCart> im
     @Override
     public Result selectCartAndProductById(Integer id) {
         List<OrderCart> orderCarts = orderCartMapper.selectCartAndProductById(id);
-        if (orderCarts != null){
+
+        if (orderCarts != null) {
             result.setMessage("查询成功");
             result.setCode(200);
             result.setData(orderCarts);
         }
         return result;
     }
+
+/*    @Override
+    public Result selectCartListByPage(OrderCart orderCart) {
+        Page<OrderCart> objectPage = new Page<>(orderCart.getPage(), orderCart.getRow());
+
+        return null;
+    }*/
 }

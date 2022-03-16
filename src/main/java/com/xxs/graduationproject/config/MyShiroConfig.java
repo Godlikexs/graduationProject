@@ -82,7 +82,7 @@ public class MyShiroConfig {
         map.put("/api//getPhone","anon");
         map.put("/api/phoneLogin","anon");
         map.put("/api/loginOut","authc");//登出方法需登录
-        map.put("/static/**","anon");//静态资源匿名访问
+        map.put("/img/**","anon");//静态资源匿名访问
         map.put("/**","authc");//所有请求拦截
 
 

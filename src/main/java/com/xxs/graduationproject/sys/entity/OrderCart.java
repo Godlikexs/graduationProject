@@ -2,6 +2,7 @@ package com.xxs.graduationproject.sys.entity;
 
 import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 
@@ -13,7 +14,7 @@ import java.io.Serializable;
  * @author XiongXiaoSong
  * @since 2022-03-15
  */
-public class OrderCart implements Serializable {
+public class OrderCart extends MyPage implements Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -33,7 +34,35 @@ public class OrderCart implements Serializable {
     private BigDecimal goodsPrice;//购物车小计
 
     /**
-     * 下单后就不在购物车；
+     * 商品图
+     */
+    @TableField(exist = false)//从产品表中查询图片
+    private String goodsImg;
+
+    public String getGoodsImg() {
+        return goodsImg;
+    }
+
+    public void setGoodsImg(String goodsImg) {
+        this.goodsImg = goodsImg;
+    }
+
+    /**
+     * 商品价格
+     */
+    @TableField(exist = false)//从产品表中查询单价
+    private BigDecimal price;
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    /**
+     * 下单后就不在购物车；0 未下单  1.下单 2.删除
      */
     private Integer state;
 
@@ -105,14 +134,16 @@ public class OrderCart implements Serializable {
     @Override
     public String toString() {
         return "OrderCart{" +
-        "skuId=" + skuId +
-        ", cartId=" + cartId +
-        ", spuId=" + spuId +
-        ", shopId=" + shopId +
-        ", goodsName=" + goodsName +
-        ", goodsNumber=" + goodsNumber +
-        ", goodsPrice=" + goodsPrice +
-        ", state=" + state +
-        "}";
+                "skuId=" + skuId +
+                ", cartId=" + cartId +
+                ", spuId=" + spuId +
+                ", shopId=" + shopId +
+                ", goodsName='" + goodsName + '\'' +
+                ", goodsNumber=" + goodsNumber +
+                ", goodsPrice=" + goodsPrice +
+                ", goodsImg='" + goodsImg + '\'' +
+                ", price=" + price +
+                ", state=" + state +
+                '}';
     }
 }
