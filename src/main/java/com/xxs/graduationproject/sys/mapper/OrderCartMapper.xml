@@ -12,6 +12,8 @@
         <result column="goods_number" property="goodsNumber" />
         <result column="goods_price" property="goodsPrice" />
         <result column="state" property="state" />
+        <result column="price" property="price"/>
+        <result column="goods_img" property="goodsImg"/>
     </resultMap>
     <select id="selectNumberByUserIdAndState" resultType="java.lang.Integer">
         SELECT
@@ -27,5 +29,32 @@
         WHERE
             `user`.id=#{id} AND order_cart.state=0
     </select>
+    <select id="selectCartAndProductById" resultType="com.xxs.graduationproject.sys.entity.OrderCart">
+        SELECT
+            order_cart.goods_name,
+            order_cart.goods_number,
+            order_cart.goods_price,
+            order_cart.state,
+            order_cart.cart_id,
+            xe_goods.price,
+            xe_goods.goods_img
+        FROM
+            order_cart
+                left JOIN
+            user_cart
+            on user_cart.cart_id=order_cart.cart_id
+                LEFT JOIN
+            `user`
+            ON `user`.id=user_cart.user_id
+                LEFT JOIN
+            cart_products
+            ON cart_products.cart_id=order_cart.cart_id
+                LEFT JOIN
+            xe_goods
+            ON cart_products.goods_id=xe_goods.id
+        WHERE
+            `user`.id=#{id} AND order_cart.state=0
+    </select>
+
 
 </mapper>

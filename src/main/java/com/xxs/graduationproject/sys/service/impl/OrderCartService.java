@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -31,6 +32,17 @@ public class OrderCartService extends ServiceImpl<OrderCartMapper, OrderCart> im
             result.setMessage("查询成功");
             result.setCode(200);
             result.setData(i);
+        }
+        return result;
+    }
+
+    @Override
+    public Result selectCartAndProductById(Integer id) {
+        List<OrderCart> orderCarts = orderCartMapper.selectCartAndProductById(id);
+        if (orderCarts != null){
+            result.setMessage("查询成功");
+            result.setCode(200);
+            result.setData(orderCarts);
         }
         return result;
     }

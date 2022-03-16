@@ -2,17 +2,15 @@ package com.xxs.graduationproject.sys.controller;
 
 
 import com.xxs.graduationproject.common.Result;
+import com.xxs.graduationproject.sys.entity.OrderCart;
 import com.xxs.graduationproject.sys.entity.User;
 import com.xxs.graduationproject.sys.service.impl.OrderCartService;
 import com.xxs.graduationproject.sys.service.impl.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -39,5 +37,18 @@ public class OrderCartController {
         Result result = orderCartService.selectNumberByUserIdAndState(i);
         return result;
     }
+
+    @CrossOrigin//查询当前购物车列表
+    @GetMapping(value = "/cartList")//获取用户购物车未下单商品数量
+    public Result cartList(User user){//接收前端请求返回当前用户信息
+        //通过用户名查询用户id
+        System.err.println("user:"+user);
+        //通过用户名查询用户id
+        int i = userService.selectIdByUserName(user);
+        Result result = orderCartService.selectCartAndProductById(i);
+        return result;
+    }
+
+
 }
 
