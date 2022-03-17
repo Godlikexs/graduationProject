@@ -18,5 +18,5 @@ public interface IOrderCartService extends IService<OrderCart> {
 
     Result selectCartAndProductById(Integer id);
 
-    /*Result selectCartListByPage(OrderCart orderCart);*/
+    Result selectCartListByPage(OrderCart orderCar,Integer id);//使用orderCart封装page
 }

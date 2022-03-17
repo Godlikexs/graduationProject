@@ -49,6 +49,20 @@ public class OrderCartController {
         return result;
     }
 
+    @CrossOrigin//查询当前购物车列表
+    @GetMapping(value = "/cartListByPage")//获取用户购物车未下单商品数量
+    public Result cartListByPage(OrderCart orderCart){//接收前端请求返回当前用户信息
+        //通过用户名查询用户id
+        System.err.println("orderCart:"+orderCart);
+        //获取shiro主题，可以理解为当前系统用户  调用自定义Realms中认证方法
+        Subject subject = SecurityUtils.getSubject();
+        User loginUser = (User) subject.getSession().getAttribute("loginUser");
+        //通过用户名查询用户id
+
+        Result result = orderCartService.selectCartListByPage(orderCart, loginUser.getId());
+        return result;
+    }
+
 
 }
 
