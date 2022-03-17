@@ -18,7 +18,7 @@ public class TencentSmsConfig {
     @Bean
     public SmsClient getSmsClient() {
         //创建腾讯云短信发送凭证对象，填入secretId和secretKey
-        Credential cred = new Credential("AKIDlJn0wc08zZsviFVVFivsZz81dx0mHVS8", "RbU6RWLs88rKWR6UaPyG8j36sNbYEdlc");
+        Credential cred = new Credential("*******************", "*******************");
 
         HttpProfile httpProfile = new HttpProfile();
         httpProfile.setEndpoint("sms.tencentcloudapi.com");
